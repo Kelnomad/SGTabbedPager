@@ -177,7 +177,7 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
             ReloadData();
         }
 
-        public override void ViewWillLayoutSubviews() => Layout();
+        public override void ViewWillLayoutSubviews() { Layout(); }
 
         public override void WillTransitionToTraitCollection(UITraitCollection traitCollection,
             IUIViewControllerTransitionCoordinator coordinator)
@@ -187,13 +187,18 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
             if (ContentScrollView != null)
                 ContentScrollView.Delegate = null;
 
-            coordinator?.AnimateAlongsideTransition(context => {}, context => {
-                if (TitleScrollView != null)
-                    TitleScrollView.Delegate = this;
-                if (ContentScrollView != null)
-                    ContentScrollView.Delegate = this;
-                SwitchPage(_selectedIndex, false);
-            });
+            if (coordinator != null)
+            {
+                coordinator.AnimateAlongsideTransition(context => { }, context =>
+                {
+                    if (TitleScrollView != null)
+                        TitleScrollView.Delegate = this;
+                    if (ContentScrollView != null)
+                        ContentScrollView.Delegate = this;
+                    SwitchPage(_selectedIndex, false);
+
+                });
+            }
         }
 
         /// <summary>
@@ -269,7 +274,7 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
             for (var i = 0; i < _viewControllerCount; i++)
             {                
                 var button = UIButton.FromType(UIButtonType.Custom);
-                button.SetTitle(Datasource?.GetViewControllerTitle(i), UIControlState.Normal);
+                button.SetTitle(Datasource!=null?Datasource.GetViewControllerTitle(i) : null, UIControlState.Normal);
                 button.SetTitleColor(headerColor, UIControlState.Normal);
                 if (button.TitleLabel != null) {
                     button.TitleLabel.Font = font;
@@ -339,9 +344,12 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
             {
                 _selectedIndex = next;
 
-                UIView.Animate(_enableParallax ? 0.3 : 0, LayoutTabIndicator, () => {
-                    Delegate?.DidShowViewController(_selectedIndex);
-                    OnShowViewController?.Invoke(this, _selectedIndex);
+                UIView.Animate(_enableParallax ? 0.3 : 0, LayoutTabIndicator, () => 
+                {
+                    if (Delegate!=null)
+		                Delegate.DidShowViewController(_selectedIndex); 
+                    if (OnShowViewController!=null)
+                        OnShowViewController.Invoke(this, _selectedIndex);
                 });
             }
 
