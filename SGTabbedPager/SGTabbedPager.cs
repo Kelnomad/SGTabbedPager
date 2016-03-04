@@ -255,9 +255,9 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
 
             _enableParallax = !animated;
 
-            var point = _tabButtons[index].Frame;
-            point.X -= (TitleScrollView.Bounds.Size.Width - _tabButtons[index].Frame.Size.Width) / 2f;
-            TitleScrollView.SetContentOffset(new CGPoint(point.X, point.Y), animated);
+//            var point = _tabButtons[index].Frame;
+//            point.X -= (TitleScrollView.Bounds.Size.Width - _tabButtons[index].Frame.Size.Width) / 2f;
+//            TitleScrollView.SetContentOffset(new CGPoint(point.X, point.Y), animated);
             ContentScrollView.ScrollRectToVisible(frame, animated);
         }
 
@@ -305,17 +305,20 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
 
             nfloat currentX = 0f;
             size = ContentScrollView.Frame.Size;
+			var frameWidth = size.Width / _viewControllerCount;
             for (var i = 0; i < _viewControllerCount; i++)
             {
                 var label = _tabButtons[i];
-                if (i == 0)
-                    currentX += (size.Width - label.Frame.Size.Width) / 2f;
+//                if (i == 0)
+//                    currentX += (size.Width - label.Frame.Size.Width) / 2f;
+				label.Frame = new CGRect(currentX, 0.0, frameWidth, _tabHeight);
+                //label.Frame = new CGRect(currentX, 0.0, label.Frame.Size.Width, _tabHeight);
+//                if (i == _viewControllerCount - 1)
+//                    currentX += (size.Width - label.Frame.Size.Width) / 2f + label.Frame.Size.Width;
+//                else
+                //    currentX += label.Frame.Size.Width + 30;
 
-                label.Frame = new CGRect(currentX, 0.0, label.Frame.Size.Width, _tabHeight);
-                if (i == _viewControllerCount - 1)
-                    currentX += (size.Width - label.Frame.Size.Width) / 2f + label.Frame.Size.Width;
-                else
-                    currentX += label.Frame.Size.Width + 30;
+				currentX += label.Frame.Size.Width;
                 var vc = _viewControllers[i];
                 vc.View.Frame = new CGRect(size.Width * i, 0, size.Width, size.Height);
             }
@@ -365,7 +368,7 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
                 var frac = page - Math.Truncate(page);
                 var newXOffset = _tabButtons[index].Frame.X + diff * frac - centering1 * (1 - frac) -
                                  centering2 * frac;
-                TitleScrollView.ContentOffset = new CGPoint(Math.Max(0, newXOffset), 0);
+//                TitleScrollView.ContentOffset = new CGPoint(Math.Max(0, newXOffset), 0);
             }
         }
 
