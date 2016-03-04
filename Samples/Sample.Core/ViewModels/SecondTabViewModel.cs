@@ -9,11 +9,9 @@ namespace Sample.Core.ViewModels
 {
     public class SecondTabViewModel : BaseViewModel
     {
-        private string _hello = "Hello from second tab !";
-        public string Hello
-        {
-            get { return _hello; }
-            set { SetProperty(ref _hello, value); }
-        }
+		public SecondTabViewModel()
+		{
+			Title = "Infos adhésion";
+		}
     }
 }

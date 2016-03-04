@@ -9,11 +9,9 @@ namespace Sample.Core.ViewModels
 {
     public class FirstTabViewModel : BaseViewModel
     {
-        private string _hello = "Hello From first tab !";
-        public string Hello
-        {
-            get { return _hello; }
-            set { SetProperty(ref _hello, value); }
-        }
+		public FirstTabViewModel()
+		{
+			Title = "Coordonnées";
+		}
     }
 }
