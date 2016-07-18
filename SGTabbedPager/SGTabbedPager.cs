@@ -246,6 +246,7 @@ namespace DK.Ostebaronen.Touch.SGTabbedPager
         /// Will also enable a parallax effect on the Tab Indicator itself.</param>
         public void SwitchPage(int index, bool animated)
         {
+
             if (ContentScrollView == null) return;
             if (TitleScrollView == null) return;
 
